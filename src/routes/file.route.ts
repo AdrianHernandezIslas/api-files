@@ -4,5 +4,6 @@ import fileController from "../controllers/file.controller";
 const router = Router();
 
 router.post('/', (req,res) => fileController.upload(req,res));
+router.post('/get', (req,res) => fileController.get(req,res));
 
 export default router;

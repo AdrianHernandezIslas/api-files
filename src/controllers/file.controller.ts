@@ -13,6 +13,12 @@ class FileController{
         await this.dropbox.uploadBase64File("unarchivo",file);
         return res.send("ok");
     }
+
+    public async get(req:Request, res:Response){
+        const file =  req.body.file;
+         await this.dropbox.getBase64File(file)
+         return res.send("ok");
+     }
 }
 
 export default new FileController(new DropboxLibrary());

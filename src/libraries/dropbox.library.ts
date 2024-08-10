@@ -1,13 +1,14 @@
-import { Dropbox } from "dropbox";
+import { Dropbox, DropboxResponse } from "dropbox";
 import fetch from "isomorphic-fetch";
 import mime from "mime-types";
+import { DropboxFileMetadata } from "../domain/interface/DropboxFileMetaData.interface";
 
 export class DropboxLibrary {
-  private intance: Dropbox;
+  private instance: Dropbox;
   private readonly token: string = process.env.TOKEN_DROPBOX as string;
 
   constructor() {
-    this.intance = new Dropbox({ accessToken: this.token, fetch });
+    this.instance = new Dropbox({ accessToken: this.token });
   }
 
   async uploadBase64File(fileName: string, base64Data: string) {
@@ -31,7 +32,7 @@ export class DropboxLibrary {
 
     try {
       // Usa la API de Dropbox para subir el archivo
-      const response = await this.intance.filesUpload({
+      const response = await this.instance.filesUpload({
         path: `/${fileName}`,
         contents: fileBuffer,
       });
@@ -40,5 +41,10 @@ export class DropboxLibrary {
     } catch (error) {
       console.error("Error al subir el archivo:", error);
     }
+  }
+
+  async getBase64File(url: string):Promise<DropboxFileMetadata> {
+    const response: DropboxResponse<DropboxFileMetadata> = await this.instance.filesDownload({ path: url });
+    return response.result;
   }
 }
