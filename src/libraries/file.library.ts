@@ -1,6 +1,6 @@
 import mime from "mime-types";
 
-export class FileLibrary {
+class FileLibrary {
   private readonly BASE64_FORMAT = "base64";
   private readonly BASE64_REGEX = /^data:(.+);base64,(.*)$/;
 
@@ -15,7 +15,7 @@ export class FileLibrary {
     return { mimeType, content };
   }
 
-  base64toBuffer(content: string): Buffer {
+  base64ToBuffer(content: string): Buffer {
     return Buffer.from(content, this.BASE64_FORMAT);
   }
 
@@ -23,3 +23,5 @@ export class FileLibrary {
     return mime.extension(mimeType);
   }
 }
+
+export default new FileLibrary;

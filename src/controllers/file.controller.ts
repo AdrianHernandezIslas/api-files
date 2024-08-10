@@ -1,24 +1,19 @@
 import { Request, response, Response } from 'express';
-import { DropboxLibrary } from '../libraries/dropbox.library';
+import dropbox from '../libraries/dropbox.library';
+import fileService from '../services/file.service';
 
 class FileController{
-    private dropbox: DropboxLibrary
-
-    constructor(dropbox:DropboxLibrary){
-        this.dropbox = dropbox;
-    }
-
     public async upload(req:Request, res:Response){
        const file =  req.body.file;
-        await this.dropbox.uploadBase64File("unarchivo",file);
-        return res.send("ok");
+        const response = await fileService.upload(file);
+        res.status(201).json(response);
     }
 
     public async get(req:Request, res:Response){
         const file =  req.body.file;
-         await this.dropbox.getBase64File(file)
+         await dropbox.getBase64File(file)
          return res.send("ok");
      }
 }
 
-export default new FileController(new DropboxLibrary());
+export default new FileController();
