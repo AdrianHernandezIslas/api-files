@@ -2,7 +2,9 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
 
-dotenv.config();
+if(!process.env.NODE_ENV)    
+    dotenv.config();
+
 
 import fileRoute from "./routes/file.route";
 
