@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cors from 'cors';
 import morgan from "morgan";
 import dotenv from "dotenv";
 
@@ -13,7 +14,7 @@ const app: Application = express();
 
 //settings
 app.set("port", process.env.PORT || 4000);
-
+app.use(cors());
 //middlewares
 app.use(morgan("dev"));
 app.use(express.json({ limit: '10mb' }));
