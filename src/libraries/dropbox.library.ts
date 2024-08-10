@@ -14,7 +14,7 @@ class DropboxLibrary {
     try {
       // Usa la API de Dropbox para subir el archivo
       const response = await this.instance.filesUpload({
-        path: `/${fileName}`,
+        path: `${fileName}`,
         contents: fileBuffer,
       });
 
@@ -25,7 +25,7 @@ class DropboxLibrary {
   }
 
   async getBufferFile(url: string):Promise<DropboxFileMetadata> {
-    const response: DropboxResponse<DropboxFileMetadata> = await this.instance.filesDownload({ path: url });
+    const response: DropboxResponse<DropboxFileMetadata> = await this.instance.filesDownload({ path: `/${url}` });
     return response.result;
   }
 }

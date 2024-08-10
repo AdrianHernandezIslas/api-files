@@ -1,4 +1,6 @@
 import mime from "mime-types";
+import { v4 as uuidv4 } from 'uuid';
+
 
 class FileLibrary {
   private readonly BASE64_FORMAT = "base64";
@@ -36,6 +38,11 @@ class FileLibrary {
 
   getMimeTypeFile(nameFile:string){
     return mime.lookup(nameFile) as string;
+  }
+  
+  getRandomName(){
+    const generatedUUID = uuidv4();
+    return `file_${generatedUUID.toString()}`;
   }
 }
 
