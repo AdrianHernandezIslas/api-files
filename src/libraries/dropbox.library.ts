@@ -24,7 +24,7 @@ class DropboxLibrary {
     }
   }
 
-  async getBase64File(url: string):Promise<DropboxFileMetadata> {
+  async getBufferFile(url: string):Promise<DropboxFileMetadata> {
     const response: DropboxResponse<DropboxFileMetadata> = await this.instance.filesDownload({ path: url });
     return response.result;
   }

@@ -19,9 +19,24 @@ class FileLibrary {
     return Buffer.from(content, this.BASE64_FORMAT);
   }
 
-  getExtensionFile(mimeType:string){
+  bufferToBase64(bufferFile: Buffer | undefined): string {
+    if (bufferFile === undefined) throw new Error("El buffer no debe ser indefinido");
+
+    return bufferFile.toString(this.BASE64_FORMAT);
+  }
+
+  splitMetadata(nameFile: string) {
+    const [name, extension] = nameFile.split("//.");
+    return { name, extension };
+  }
+
+  getExtensionFile(mimeType: string) {
     return mime.extension(mimeType);
+  }
+
+  getMimeTypeFile(nameFile:string){
+    return mime.lookup(nameFile) as string;
   }
 }
 
-export default new FileLibrary;
+export default new FileLibrary();
