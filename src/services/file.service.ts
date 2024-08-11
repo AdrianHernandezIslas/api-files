@@ -3,20 +3,21 @@ import fileLibrary from "../libraries/file.library";
 import sharpLibrary from "../libraries/sharp.library";
 import { Dimension } from "../domain/interface/Dimension.interface";
 import { FileRequest } from "../domain/interface/FileRequest.interface";
+import storeLibrary from "../libraries/store.library";
 
 class FileService {
   async upload({ destination, file }: FileRequest) {
     const { mimeType, content } = fileLibrary.getMetadataBase64(file);
     const extension = fileLibrary.getExtensionFile(mimeType);
-    const fileName = `${destination || ''}/${fileLibrary.getRandomName()}.${extension}`;
-    const fileBuffer = fileLibrary.base64ToBuffer(content);
-    return await dropboxLibrary.uploadBase64File(fileName, fileBuffer);
+    const fileName = `${destination || ""}/${fileLibrary.getRandomName()}.${extension}`;
+    return await storeLibrary.uploadBase64File(fileName, content);
   }
 
   async download(path: string) {
-    const { fileBinary, name: fileName } = await dropboxLibrary.getBufferFile(path);
-    const mimeType = fileLibrary.getMimeTypeFile(fileName);
-    return { mimeType, fileName, fileBinary };
+    const { downloadURL, nameFile } = await storeLibrary.getUrlFile(path);
+    const fileBase64 = await fileLibrary.fetchBase64FromURL(downloadURL);
+    const mimeType = fileLibrary.getMimeTypeFile(nameFile);
+    return { mimeType: mimeType, fileName: nameFile, fileBinary: Buffer.from(fileLibrary.base64ToBuffer(fileBase64)) };
   }
 
   async resized(fileBinary: Buffer | undefined, dimension: Dimension) {

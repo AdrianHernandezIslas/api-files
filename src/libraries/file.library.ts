@@ -1,3 +1,4 @@
+import axios from "axios";
 import mime from "mime-types";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -43,6 +44,12 @@ class FileLibrary {
   getRandomName(){
     const generatedUUID = uuidv4();
     return `file_${generatedUUID.toString()}`;
+  }
+
+  async fetchBase64FromURL(url: string): Promise<string> {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const base64String = Buffer.from(response.data, 'binary').toString('base64');
+    return base64String;
   }
 }
 
